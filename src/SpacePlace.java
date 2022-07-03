@@ -1,7 +1,6 @@
 
 public class SpacePlace {
-  private int xOrg;
-  private int yOrg;
+  private int xOrg, yOrg;
   private double theta;
   private double phi;
   
