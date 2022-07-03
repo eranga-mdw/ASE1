@@ -411,140 +411,36 @@ public class Aardvark {
           case 1:
             pg();
             break;
-          case 2:
-            printGuessGrid();
-            break;
-          case 3:
-            Collections.sort(_g);
-            printGuesses();
-            break;
-          case 4:
-            System.out.println("Where will the top left of the domino be?");
-            System.out.println("Column?");
+            case 2:
 
-            int x = gecko(99);
-            while (x < 1 || x > 8) {
-              try {
-                String s3 = io.getString();
-                x = Integer.parseInt(s3);
-              } catch (Exception e) {
-                System.out.println("Bad input");
-                x = gecko(65);
-              }
-            }
-            System.out.println("Row?");
-            int y = gecko(98);
-            while (y < 1 || y > 7) {
-              try {
-                String s3 = io.getString();
-                y = Integer.parseInt(s3);
-              } catch (Exception e) {
-                System.out.println("Bad input");
-                y = gecko(64);
-              }
-            }
-            x--;
-            y--;
-            System.out.println("Horizontal or Vertical (H or V)?");
-            boolean horiz;
-            int y2,
-            x2;
-            Location lotion;
-            while ("AVFC" != "BCFC") {
-              String s3 = io.getString();
-              if (s3 != null && s3.toUpperCase().startsWith("H")) {
-                lotion = new Location(x, y, Location.DIRECTION.HORIZONTAL);
-                System.out.println("Direction to place is " + lotion.d);
-                horiz = true;
-                x2 = x + 1;
-                y2 = y;
-                break;
-              }
-              if (s3 != null && s3.toUpperCase().startsWith("V")) {
-                horiz = false;
-                lotion = new Location(x, y, Location.DIRECTION.VERTICAL);
-                System.out.println("Direction to place is " + lotion.d);
-                x2 = x;
-                y2 = y + 1;
-                break;
-              }
-              System.out.println("Enter H or V");
-            }
-            if (x2 > 7 || y2 > 6) {
-              System.out
-                  .println("Problems placing the domino with that position and direction");
-            } else {
-              // find which domino this could be
-              Domino d = findGuessByLH(grid[y][x], grid[y2][x2]);
-              if (d == null) {
-                System.out.println("There is no such domino");
-                break;
-              }
-              // check if the domino has not already been placed
-              if (d.placed) {
-                System.out.println("That domino has already been placed :");
-                System.out.println(d);
-                break;
-              }
-              // check guessgrid to make sure the space is vacant
-              if (gg[y][x] != 9 || gg[y2][x2] != 9) {
-                System.out.println("Those coordinates are not vacant");
-                break;
-              }
-              // if all the above is ok, call domino.place and updateGuessGrid
-              gg[y][x] = grid[y][x];
-              gg[y2][x2] = grid[y2][x2];
-              if (grid[y][x] == d.high && grid[y2][x2] == d.low) {
-                d.place(x, y, x2, y2);
-              } else {
-                d.place(x2, y2, x, y);
-              }
-              score += 1000;
-              collateGuessGrid();
-              pf.dp.repaint();
-            }
-            break;
-          case 5:
-            System.out.println("Enter a position that the domino occupies");
-            System.out.println("Column?");
+              shuffleDominoesOrder();
+              rotateDominoes();
+              //printGrid();
+              break;
+            default:
+              shuffleDominoesOrder();
+              rotateDominoes();
+              rotateDominoes();
+              rotateDominoes();
+              invertSomeDominoes();
+              break;
+          }
 
-            int x13 = -9;
-            while (x13 < 1 || x13 > 8) {
-              try {
-                String s3 = io.getString();
-                x13 = Integer.parseInt(s3);
-              } catch (Exception e) {
-                x13 = -7;
-              }
-            }
-            System.out.println("Row?");
-            int y13 = -9;
-            while (y13 < 1 || y13 > 7) {
-              try {
-                String s3 = io.getString();
-                y13 = Integer.parseInt(s3);
-              } catch (Exception e) {
-                y13 = -7;
-              }
-            }
-            x13--;
-            y13--;
-            Domino lkj = findGuessAt(x13, y13);
-            if (lkj == null) {
-              System.out.println("Couln't find a domino there");
-            } else {
-              lkj.placed = false;
-              gg[lkj.hy][lkj.hx] = 9;
-              gg[lkj.ly][lkj.lx] = 9;
-              score -= 1000;
-              collateGuessGrid();
-              pf.dp.repaint();
-            }
-            break;
-          case 7:
-            System.out.printf("%s your score is %d\n", playerName, score);
-            break;
-          case 6:
+          generateDominoes();
+          shuffleDominoesOrder();
+          placeDominoes();
+          collateGrid();
+          pg();
+          generateGuesses();
+          collateGuessGrid();
+          mode = 1;
+          cf = 0;
+          score = 0;
+          startTime =System.currentTimeMillis();
+          pf.PictureFrame(this);
+          pf.dp.repaint();
+          int c3 = -7;
+          while (c3 != ZERO){
             System.out.println();
             String h8 = "So you want to cheat, huh?";
             String u8 = h8.replaceAll(".", "=");
